@@ -31,35 +31,29 @@ const WindowShader = new Lang.Class({
         actor.add_effect(this.brightness_effect);
         this.desaturate_effect = new Clutter.DesaturateEffect();
         actor.add_effect(this.desaturate_effect);
-
-        this.bg_blur_effect = new Shell.BlurEffect({
-            brightness: 1, sigma: 3, mode: 1});
-        let constraintPosX = new Clutter.BindConstraint({
-            source: actor, coordinate: Clutter.BindCoordinate.X, offset: 0});
-        let constraintPosY = new Clutter.BindConstraint({
-            source: actor, coordinate: Clutter.BindCoordinate.Y, offset: 0});
-        let constraintSizeX = new Clutter.BindConstraint({
-            source: actor, coordinate: Clutter.BindCoordinate.WIDTH, offset: 0});
-        let constraintSizeY = new Clutter.BindConstraint({
-            source: actor, coordinate: Clutter.BindCoordinate.HEIGHT, offset: 0});
-        this.bg_blur_actor = new Clutter.Actor();
-        this.bg_blur_actor.add_constraint(constraintPosX);
-        this.bg_blur_actor.add_constraint(constraintPosY);
-        this.bg_blur_actor.add_constraint(constraintSizeX);
-        this.bg_blur_actor.add_constraint(constraintSizeY);
-        this.bg_blur_actor.add_effect_with_name('blur-effect', this.bg_blur_effect);
-        actor.get_parent().insert_child_below(this.bg_blur_actor, actor);
-
-        // let widget = new St.Widget({
-        //     x: actor.x, y: actor.y, width: actor.width, height: actor.height});
-        // this.bg_blur_effect = new Shell.BlurEffect({
-        //     brightness: 1, sigma: 5, mode: 0});
-        // widget.add_effect(this.bg_blur_effect);
-        // actor.get_parent().add_child(widget);
-
         this.blur_effect = new Shell.BlurEffect({
             brightness: 1, sigma: 2, mode: 0});
         actor.add_effect(this.blur_effect);
+
+        // this.bg_blur_actor = new Clutter.Actor();
+        // this.bg_blur_actor.bg_blur = true;
+        // this.bg_blur_actor.add_constraint(
+        //     new Clutter.BindConstraint({
+        //         source: actor, coordinate: Clutter.BindCoordinate.X}));
+        // this.bg_blur_actor.add_constraint(
+        //     new Clutter.BindConstraint({
+        //         source: actor, coordinate: Clutter.BindCoordinate.Y}));
+        // this.bg_blur_actor.add_constraint(
+        //     new Clutter.BindConstraint({
+        //         source: actor, coordinate: Clutter.BindCoordinate.WIDTH}));
+        // this.bg_blur_actor.add_constraint(
+        //     new Clutter.BindConstraint({
+        //         source: actor, coordinate: Clutter.BindCoordinate.HEIGHT}));
+        // this.bg_blur_effect = new Shell.BlurEffect({
+        //     brightness: 1, sigma: 10, mode: Shell.BlurMode.BACKGROUND});
+        // this.bg_blur_actor.add_effect(this.bg_blur_effect);
+        // global.window_group.insert_child_below(this.bg_blur_actor, this._actor);
+
         this.state = false;
     },
 
@@ -71,17 +65,12 @@ const WindowShader = new Lang.Class({
             this.brightness_effect.enabled = false;
             this.desaturate_effect.enabled = false;
             this.blur_effect.enabled = false;
-            this.bg_blur_actor.hide();
-            this.bg_blur_effect.enabled = false;
-        }
-        else {
+            // this.bg_blur_effect.enabled = false;
+        } else {
             transparency = s.get_double('transparency');
             if (transparency > 0){
                 this._actor.set_opacity(255 * (1.0 - transparency));
-                this.bg_blur_actor.show();
-                this.bg_blur_effect.enabled = true;
-                this._actor.get_parent().set_child_below_sibling(
-                    this.bg_blur_actor, this._actor);
+                // this.bg_blur_effect.enabled = true;
             }
             brightness = s.get_double('brightness');
             contrast = s.get_double('contrast');
