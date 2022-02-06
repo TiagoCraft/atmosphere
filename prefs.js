@@ -26,6 +26,18 @@ function buildPrefsWidget() {
 }
 
 
+function labeled_widget(label, widget) {
+    let box = new Gtk.Box();
+    box.set_orientation(Gtk.Orientation.HORIZONTAL);
+    box.margin = 20;
+    box.set_spacing(15);
+    box.append(new Gtk.Label({label : label}));
+    box.append(widget);
+
+    return box
+}
+
+
 const PrefsWidget = new GObject.Class({
     Name : "Atmosphere.Prefs.Widget",
     GTypeName : "AtmospherePrefsWidget",
@@ -33,80 +45,53 @@ const PrefsWidget = new GObject.Class({
 
     _init : function (params){
         let settings = getSettings();
+        const default_flags = Gio.SettingsBindFlags.DEFAULT;
 
         this.parent(params);
         this.margin = 20;
         this.set_spacing(15);
         this.set_orientation(Gtk.Orientation.VERTICAL);
 
-        let brightnessBox = new Gtk.Box();
-        brightnessBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-        brightnessBox.margin = 20;
-        brightnessBox.set_spacing(15);
-        this.append(brightnessBox);
-        brightnessBox.append(new Gtk.Label({label : "Brightness"}));
-        let brightnessSpinButton = new Gtk.SpinButton();
-        brightnessSpinButton.set_digits(2)
-        brightnessSpinButton.set_range(-1.0, 1.0);
-        brightnessSpinButton.set_increments(0.05, 0.1);
-        settings.bind('brightness', brightnessSpinButton, 'value',
-                      Gio.SettingsBindFlags.DEFAULT)
-        brightnessBox.append(brightnessSpinButton);
+        let widget = new Gtk.Switch();
+        settings.bind('active', widget, 'active', default_flags);
+        this.append(labeled_widget('active', widget));
 
-        let contrastBox = new Gtk.Box();
-        contrastBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-        contrastBox.margin = 20;
-        contrastBox.set_spacing(15);
-        this.append(contrastBox);
-        contrastBox.append(new Gtk.Label({label : "Contrast"}));
-        let contrastSpinButton = new Gtk.SpinButton();
-        contrastSpinButton.set_digits(2)
-        contrastSpinButton.set_range(-1.0, 1.0);
-        contrastSpinButton.set_increments(0.05, 0.1);
-        settings.bind('contrast', contrastSpinButton, 'value',
-                      Gio.SettingsBindFlags.DEFAULT)
-        contrastBox.append(contrastSpinButton);
+        widget = new Gtk.Switch();
+        settings.bind('panel-widget', widget, 'active', default_flags);
+        this.append(labeled_widget('panel-widget', widget));
 
-        let desaturateBox = new Gtk.Box();
-        desaturateBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-        desaturateBox.margin = 20;
-        desaturateBox.set_spacing(15);
-        this.append(desaturateBox);
-        desaturateBox.append(new Gtk.Label({label : "Desaturate"}));
-        let desaturateSpinButton = new Gtk.SpinButton();
-        desaturateSpinButton.set_digits(2)
-        desaturateSpinButton.set_range(0.0, 1.0);
-        desaturateSpinButton.set_increments(0.05, 0.1);
-        settings.bind('desaturate', desaturateSpinButton, 'value',
-                      Gio.SettingsBindFlags.DEFAULT)
-        desaturateBox.append(desaturateSpinButton);
+        widget = new Gtk.SpinButton();
+        widget.set_digits(2)
+        widget.set_range(-1.0, 1.0);
+        widget.set_increments(0.05, 0.1);
+        settings.bind('brightness', widget, 'value', default_flags);
+        this.append(labeled_widget('brightness', widget));
 
-        let transparencyBox = new Gtk.Box();
-        transparencyBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-        transparencyBox.margin = 20;
-        transparencyBox.set_spacing(15);
-        this.append(transparencyBox);
-        transparencyBox.append(new Gtk.Label({label : "Transparency"}));
-        let transparencySpinButton = new Gtk.SpinButton();
-        transparencySpinButton.set_digits(2)
-        transparencySpinButton.set_range(0.0, 1.0);
-        transparencySpinButton.set_increments(0.05, 0.1);
-        settings.bind('transparency', transparencySpinButton, 'value',
-                      Gio.SettingsBindFlags.DEFAULT)
-        transparencyBox.append(transparencySpinButton);
+        widget = new Gtk.SpinButton();
+        widget.set_digits(2)
+        widget.set_range(-1.0, 1.0);
+        widget.set_increments(0.05, 0.1);
+        settings.bind('contrast', widget, 'value', default_flags);
+        this.append(labeled_widget('Contrast', widget));
 
-        let blurBox = new Gtk.Box();
-        blurBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-        blurBox.margin = 20;
-        blurBox.set_spacing(15);
-        this.append(blurBox);
-        blurBox.append(new Gtk.Label({label : "Blur"}))
-        let blurSpinButton = new Gtk.SpinButton();
-        // blurSpinButton.set_digits(1)
-        blurSpinButton.set_range(0, 20);
-        blurSpinButton.set_increments(1, 2);
-        settings.bind('blur', blurSpinButton, 'value',
-                      Gio.SettingsBindFlags.DEFAULT);
-        blurBox.append(blurSpinButton);
+        widget = new Gtk.SpinButton();
+        widget.set_digits(2)
+        widget.set_range(0.0, 1.0);
+        widget.set_increments(0.05, 0.1);
+        settings.bind('desaturate', widget, 'value', default_flags);
+        this.append(labeled_widget('Desaturate', widget));
+
+        widget = new Gtk.SpinButton();
+        widget.set_digits(2)
+        widget.set_range(0.0, 1.0);
+        widget.set_increments(0.05, 0.1);
+        settings.bind('transparency', widget, 'value', default_flags);
+        this.append(labeled_widget('transparency', widget));
+
+        widget = new Gtk.SpinButton();
+        widget.set_range(0, 20);
+        widget.set_increments(1, 2);
+        settings.bind('blur', widget, 'value', default_flags);
+        this.append(labeled_widget('Blur', widget));
     }
 });

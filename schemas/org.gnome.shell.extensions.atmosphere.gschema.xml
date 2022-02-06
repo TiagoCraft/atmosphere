@@ -2,6 +2,16 @@
 <schemalist>
     <schema id="org.gnome.shell.extensions.atmosphere"
         path="/org/gnome/shell/extensions/atmosphere/">
+            <key type="b" name="active">
+                <default>true</default>
+                <summary>summary</summary>
+                <description>description</description>
+            </key>
+            <key type="b" name="panel-widget">
+                <default>true</default>
+                <summary>summary</summary>
+                <description>description</description>
+            </key>
             <key type="d" name="brightness">
                 <default>-0.20</default>
                 <summary>summary</summary>
