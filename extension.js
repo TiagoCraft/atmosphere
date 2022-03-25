@@ -5,7 +5,7 @@ const Main = imports.ui.main;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 // const Utils = Me.imports.utils;
 
-let on_window_created, switch_button;
+let on_window_created, switch_button, close_button;
 
 
 function getSettings(){
@@ -121,16 +121,28 @@ function openSettings() {
 }
 
 
+function closeWindow() {}
+
+
 function init(){
     switch_button = new St.Button({
         style_class: "panel-button",
     });
     let label = new St.Label({
-        text: "shade",
+        text: "  shade  ",
         y_align: Clutter.ActorAlign.CENTER,
     });
     switch_button.set_child(label);
     switch_button.connect('button-release-event', openSettings);
+
+    close_button = new St.Button({
+        style_class: "panel-button"
+    });
+    close_button.set_child(new St.Label({
+        'text': '    x    ',
+        y_align: Clutter.ActorAlign.CENTER
+    }));
+    close_button.connect('button-release-event', closeWindow);
 }
 
 
@@ -187,6 +199,7 @@ function enable() {
     });
 
     Main.panel._centerBox.insert_child_at_index(switch_button, 0);
+    Main.panel._rightBox.insert_child_at_index(close_button, 0);
 }
 
 
