@@ -1,0 +1,7 @@
+{
+    "shell-version": ["41"],
+    "uuid": "atmosphere@craft.uas",
+    "name": "Atmosphere",
+    "description": "Implement atmospheric perspective",
+    "url": ""
+}
